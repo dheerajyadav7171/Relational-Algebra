@@ -234,9 +234,12 @@ relation select(string query, relation table){
         auto r2 = s.top().first; s.pop();
         auto [r1, v] = s.top(); s.pop();
         if(i == "|") r1.records.insert(r2.records.begin(), r2.records.end());
-        else
+        else{
+            set<vector<string>> both;
             for(auto it : r1.records)
-                if(!r2.records.count(it)) r1.records.erase(it);
+                if(r2.records.count(it)) both.insert(it);
+            r1.records = both;
+        }
         s.emplace(r1, v);
     }
     return s.top().first;
